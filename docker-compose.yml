@@ -1,42 +1,33 @@
+  GNU nano 8.4                                                                                    docker-compose.yml
+version: '3.8'
+
 services:
   db:
     image: postgres:15
-    container_name: ${PROJECT_NAME}_postgres
-    restart: always
+    container_name: venucms_postgres
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - pg_data:/var/lib/postgresql/data
-    env_file:
-      - .env
-
+    ports:
+      - "5432:5432"
   web:
-    build: .
-    container_name: ${PROJECT_NAME}_fastapi
-    restart: always
-    depends_on:
-      - db
-    env_file:
-      - .env
-    expose:
-      - "8000"
-    command: >
-      sh -c "uvicorn run:app --host 0.0.0.0 --port 8000 --workers 4"
+    image: venu-web
+    container_name: venucms_fastapi
+    environment:
+      DB_HOST: venucms_postgres  # Make sure the DB_HOST is set correctly
     volumes:
       - .:/app
-
+    ports:
+      - "8000:8000"
   nginx:
     image: nginx:latest
-    container_name: ${PROJECT_NAME}_nginx
-    restart: always
+    container_name: venucms_nginx
     depends_on:
       - web
     ports:
-      - "80:80"    # Changed to 8080 to avoid port conflict
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-
-volumes:
-  pg_data:

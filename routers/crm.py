@@ -742,7 +742,7 @@ async def filter_customers_by_status(
         session: AsyncSession = Depends(get_async_session),
         current_user=Depends(get_current_user),  # 🔹 faqat token validatsiya
 ):
-    try:
+
         result = await session.execute(
             select(customer)
             .where(customer.c.status == status_filter)
@@ -769,8 +769,7 @@ async def filter_customers_by_status(
             )
             for c in customers
         ]
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Xatolik: {str(e)}")
+
 
 
 # 2️⃣ PLATFORM BO‘YICHA FILTER
