@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from starlette.responses import JSONResponse
 
+
 # Routers
 from routers.auth import router as auth_router
 from routers.users import router as users_router
@@ -20,6 +21,18 @@ app = FastAPI(
     description="Table-based SQLAlchemy bilan Auth Sistema",
 )
 
+origins = [
+    # "https://cims-two.vercel.app",  # ✅ Frontend domain (single origin)
+   "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # --------------------------------------------------
