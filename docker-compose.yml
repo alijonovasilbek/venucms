@@ -40,11 +40,9 @@ services:
       - "443:443"  # HTTPS (443-port) faqat so'rovni qabul qiladi, lekin SSL talab qilinmaydi
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
-      - certbot-etc:/etc/letsencrypt  # Certbot yo'qsiz, faqat muqobil sifatida qoldirildi
-      - certbot-www:/var/www/certbot  # Yuqoridagi volumelar bo'sh, ishlatish shart emas
+
 
 volumes:
   pg_data:
-  certbot-etc:  # Sertifikatlar uchun bo'sh volumelar
-  certbot-www:  # Sertifikatlar uchun bo'sh volumelar
+
 
