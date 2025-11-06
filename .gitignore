@@ -1,3 +1,25 @@
-
-.venv
+# Python related
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
 .env
+.venv
+env/
+venv/
+*.db
+*.sqlite3
+
+# FastAPI specific
+*.log
+
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
