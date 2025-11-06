@@ -23,7 +23,7 @@ services:
     env_file:
       - .env
     expose:
-      - "8000"
+      - "8000"  # Nginx orqali ulanish uchun
     command: >
       sh -c "uvicorn run:app --host 0.0.0.0 --port 8000 --workers 4"
     volumes:
@@ -36,30 +36,15 @@ services:
     depends_on:
       - web
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:80"  # HTTP (80-port)
+      - "443:443"  # HTTPS (443-port) faqat so'rovni qabul qiladi, lekin SSL talab qilinmaydi
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
-      - certbot-etc:/etc/letsencrypt
-      - certbot-www:/var/www/certbot
-
-  certbot:
-    image: certbot/certbot
-    container_name: ${PROJECT_NAME}_certbot
-    depends_on:
-      - nginx
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-www:/var/www/certbot
-    command: >
-      certonly --webroot
-               --webroot-path=/var/www/certbot
-               --email admin@cognilabs.org
-               --agree-tos
-               --no-eff-email
-               -d api.project.cims.cognilabs.org
+      - certbot-etc:/etc/letsencrypt  # Certbot yo'qsiz, faqat muqobil sifatida qoldirildi
+      - certbot-www:/var/www/certbot  # Yuqoridagi volumelar bo'sh, ishlatish shart emas
 
 volumes:
   pg_data:
-  certbot-etc:
-  certbot-www:
+  certbot-etc:  # Sertifikatlar uchun bo'sh volumelar
+  certbot-www:  # Sertifikatlar uchun bo'sh volumelar
+
